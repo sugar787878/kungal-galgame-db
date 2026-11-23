@@ -1,4 +1,4 @@
--- Kungal galgame database schema
+-- Kungal galgame database schema (generated)
 CREATE TABLE works (
     id                   TEXT PRIMARY KEY,
     display_name         TEXT,

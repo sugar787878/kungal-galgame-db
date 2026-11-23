@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "version": "2026.11.23",
-  "generated_at": "2026-11-23T12:13:44Z",
+  "generated_at": "2026-11-23T10:22:26Z",
   "source": "https://www.kungal.com",
+  "repo": "sugar787878/kungal-galgame-db",
+  "raw_base": "https://raw.githubusercontent.com/sugar787878/kungal-galgame-db/main/",
   "counts": {
     "works": 34807,
     "resource_library": 4995,
-    "with_cover": 31728,
-    "covers_local": 4932
+    "with_cover": 31728
   },
-  "raw_base": "https://raw.githubusercontent.com/sugar787878/kungal-galgame-db/main/",
   "files": {
     "kungal_galgame.db": {
       "path": "data/kungal_galgame.db",
@@ -44,6 +44,5 @@
       "sha256": "6c2a86aa964d3650d695149b4063f77a955bbb66364614e811238a1379d27d86"
     }
   },
-  "repo": "sugar787878/kungal-galgame-db",
   "release": "https://github.com/sugar787878/kungal-galgame-db/releases/tag/v2026.11.23"
 }

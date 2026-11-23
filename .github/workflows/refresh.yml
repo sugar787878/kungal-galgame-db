@@ -1,0 +1,148 @@
+name: Refresh dataset
+
+on:
+  schedule:
+    # 每月 1 日 18:00 UTC（北京时间次日 02:00）
+    - cron: "0 18 1 * *"
+  workflow_dispatch:
+    inputs:
+      skip_crawl:
+        description: "只重建产物，不抓取（测试流水线用）"
+        type: boolean
+        default: false
+      refresh_covers:
+        description: "同时增量刷新封面（下载上一个封面包再补新图，较慢）"
+        type: boolean
+        default: false
+      publish:
+        description: "发布新 release"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: python -m pip install --upgrade pip openpyxl
+
+      - name: Crawl resource library (galgame)
+        if: ${{ !inputs.skip_crawl }}
+        run: python scripts/crawl_kungal.py --dataset galgame --workers 6 --delay 0.5 --db data/kungal_galgame.db
+
+      - name: Crawl info library (sort windows + works)
+        if: ${{ !inputs.skip_crawl }}
+        run: python scripts/crawl_api.py --sorts popularity_desc,released_asc,released_desc,updated_desc --max-page 100 --include-works --workers 4 --delay 0.34 --db data/kungal_galgame.db
+
+      - name: Crawl info library (release-year partitions)
+        if: ${{ !inputs.skip_crawl }}
+        run: python scripts/crawl_api.py --years 1980-2032 --workers 4 --delay 0.34 --db data/kungal_galgame.db
+
+      - name: Crawl info library (top tags)
+        if: ${{ !inputs.skip_crawl }}
+        run: python scripts/crawl_api.py --tags 120,728,872,1333 --workers 4 --delay 0.34 --db data/kungal_galgame.db
+
+      - name: Crawl release calendar
+        if: ${{ !inputs.skip_crawl }}
+        run: python scripts/crawl_calendar.py --start 1960-01 --end 2032-12 --workers 3 --delay 0.35 --db data/kungal_galgame.db
+
+      - name: Restore previous covers (optional)
+        if: ${{ inputs.refresh_covers }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          mkdir -p /tmp/prev_covers covers
+          gh release download --repo "$GITHUB_REPOSITORY" --pattern 'kungal_covers_*.zip' --dir /tmp/prev_covers --clobber || true
+          for z in /tmp/prev_covers/*.zip; do
+            [ -e "$z" ] || continue
+            echo "unpacking $z"
+            unzip -q -o "$z" -d /tmp/prev_unpack
+          done
+          if [ -d /tmp/prev_unpack/covers ]; then cp -n /tmp/prev_unpack/covers/*.webp covers/ || true; fi
+          ls covers | wc -l
+
+      - name: Download new covers (optional)
+        if: ${{ inputs.refresh_covers }}
+        run: python scripts/download_covers.py --set all --workers 8 --db data/kungal_galgame.db
+
+      - name: Build dataset
+        run: |
+          set -e
+          VERSION=$(date -u +%Y.%m.%d)
+          ARGS="--db data/kungal_galgame.db --version $VERSION"
+          if [ "${{ inputs.refresh_covers }}" = "true" ]; then
+            mkdir -p dist
+            (cd covers && zip -1 -q -r "../dist/kungal_covers_${VERSION}.zip" . -i '*.webp')
+            ARGS="$ARGS --covers-zip dist/kungal_covers_${VERSION}.zip"
+          fi
+          python scripts/build_dataset.py $ARGS
+
+      - name: Commit data
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data docs
+          if git diff --cached --quiet; then
+            echo "no data changes"
+          else
+            git commit -m "data: refresh dataset $(date -u +%F)"
+            git push
+          fi
+
+      - name: Publish release
+        if: ${{ inputs.publish != false }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          VERSION=$(python -c "import json;print(json.load(open('data/latest.json'))['version'])")
+          TAG="v$VERSION"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            TAG="${TAG}-$(date -u +%H%M)"
+          fi
+          COUNT=$(python -c "import json;print(json.load(open('data/latest.json'))['counts']['works'])")
+          gh release create "$TAG" dist/*.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Kungal galgame DB · ${VERSION} (${COUNT} works)" \
+            --notes "Automated refresh from kungal.com.
+
+- works: ${COUNT}
+- manifest: \`data/latest.json\`
+- snapshot date: $(date -u +%F)"
+
+      - name: Trigger Pages deploy
+        if: ${{ inputs.publish != false }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --repo "$GITHUB_REPOSITORY" || true
+
+      - name: Summary
+        run: |
+          python - <<'PY'
+          import json
+          d = json.load(open("data/latest.json"))
+          print("version:", d["version"])
+          print("counts:", d["counts"])
+          print("files:", ", ".join(d["files"]))
+          PY

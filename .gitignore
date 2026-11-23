@@ -6,3 +6,4 @@ __pycache__/
 covers/
 kungal_data/
 .venv/
+dist/

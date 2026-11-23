@@ -134,9 +134,33 @@ python clients/serve_api.py --db data/kungal_galgame.db --port 8000
 
 ## 六、更新
 
+### 自动（GitHub Actions）
+
+工作流 [`.github/workflows/refresh.yml`](.github/workflows/refresh.yml)：
+
+- **定时**：每月 1 日 18:00 UTC（北京时间次日 02:00）自动跑一次。
+- **手动**：Actions → *Refresh dataset* → *Run workflow*，可选参数：
+  - `skip_crawl`：只重建产物、不抓取（测流水线用）
+  - `refresh_covers`：同时增量刷新封面（会先下载上一个封面包，再补新图）
+  - `publish`：是否发新 release（默认是）
+- 每次运行流程：抓取 → 重建 CSV/JSONL/XLSX/schema/`latest.json`/浏览页 → 提交 `data/` `docs/` → 发 `v<版本>` release → 触发 Pages 重新部署。
+- 版本号 = 运行日期（UTC），如 `2026.12.01`；同日重复运行会加时分后缀避免 tag 冲突。
+- 客户端无需改代码：`sync.py` / `sync.mjs` 只认 `latest.json` 里的 `version` 与 `sha256`。
+
+### 手动
+
 - 快照版本号写在 `latest.json` 的 `version`（当前 `2026.11.23`）。
-- 重新抓取：`scripts/` 下脚本按 README 顺序跑，再用 `scripts/export_kungal.py` 导出。
-- 站点每日新增作品，建议每 1–4 周重跑一次；`--resume` 会跳过已抓页。
+- 重新抓取：`scripts/` 下脚本按下面的顺序跑，再用 `scripts/build_dataset.py` 一次性重建全部产物。
+
+```bash
+python scripts/crawl_kungal.py --dataset galgame --workers 6 --db data/kungal_galgame.db
+python scripts/crawl_api.py --sorts popularity_desc,released_asc,released_desc,updated_desc --max-page 100 --include-works --db data/kungal_galgame.db
+python scripts/crawl_api.py --years 1980-2032 --db data/kungal_galgame.db
+python scripts/crawl_api.py --tags 120,728,872,1333 --db data/kungal_galgame.db
+python scripts/crawl_calendar.py --start 1960-01 --end 2032-12 --db data/kungal_galgame.db
+python scripts/build_dataset.py --db data/kungal_galgame.db --version $(date -u +%Y.%m.%d)
+```
+
 
 ## 七、已知边界
 
