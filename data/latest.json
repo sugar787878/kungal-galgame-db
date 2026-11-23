@@ -1,40 +1,40 @@
 {
   "schema_version": 1,
   "version": "2026.11.23",
-  "generated_at": "2026-11-23T10:25:45Z",
+  "generated_at": "2026-11-23T10:41:15Z",
   "source": "https://www.kungal.com",
   "repo": "sugar787878/kungal-galgame-db",
   "raw_base": "https://raw.githubusercontent.com/sugar787878/kungal-galgame-db/main/",
   "counts": {
-    "works": 34807,
-    "resource_library": 4995,
-    "with_cover": 31728
+    "works": 34872,
+    "resource_library": 5001,
+    "with_cover": 31743
   },
   "files": {
     "kungal_galgame.db": {
       "path": "data/kungal_galgame.db",
-      "bytes": 23973888,
-      "sha256": "1225d54d6982e83f5236e8b6cee28c49f53645ff959218b44579c70bb0d69d04"
+      "bytes": 23990272,
+      "sha256": "762a5cd97da7911019db03987bc2776361839c7a0a880c8d7bec3c752d188b7f"
     },
     "works.csv": {
       "path": "data/works.csv",
-      "bytes": 12287420,
-      "sha256": "9fb008e86ef3cf49634de5a7b0cb232f495a76c1acb3a7ee590cc17c26db5923"
+      "bytes": 12298507,
+      "sha256": "14a373cef879e60e116f291d0580e147b97b9a7240998f12eaaaab9d8aebaac8"
     },
     "resource_library.csv": {
       "path": "data/resource_library.csv",
-      "bytes": 2278433,
-      "sha256": "886f1c3bcdaa0bd77d0dd98cc2fd2396e7340c612ee48bc6a9c2c83bc8434607"
+      "bytes": 2280379,
+      "sha256": "7ed295a4dc6bf252d74c4b08caa926013c13936e3de99ce4ddeecdf5dd77f7bb"
     },
     "works.jsonl": {
       "path": "data/works.jsonl",
-      "bytes": 26390253,
-      "sha256": "41fa851fc57160e7dc67b26eff593866dc414a6d1505cdba6070fedc9fa05d43"
+      "bytes": 26393674,
+      "sha256": "3f5c7475507be1328228c91648799dd889a60987ff9758890a3e004eccda6d52"
     },
     "covers_manifest.csv": {
       "path": "data/covers_manifest.csv",
-      "bytes": 6587949,
-      "sha256": "30e08df04220a5898317ea85544678d459bae35a8846729232c9797909af6884"
+      "bytes": 6556220,
+      "sha256": "3ec30d983ae424d32631bba01293139d0ccbd37cba05fb7834348569d932f8ef"
     }
   },
   "release_assets": {
