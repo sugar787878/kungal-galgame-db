@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "version": "2026.11.23",
-  "generated_at": "2026-11-23T10:22:26Z",
+  "generated_at": "2026-11-23T10:24:38Z",
   "source": "https://www.kungal.com",
   "repo": "sugar787878/kungal-galgame-db",
   "raw_base": "https://raw.githubusercontent.com/sugar787878/kungal-galgame-db/main/",
@@ -28,13 +28,13 @@
     },
     "works.jsonl": {
       "path": "data/works.jsonl",
-      "bytes": 26390253,
-      "sha256": "41fa851fc57160e7dc67b26eff593866dc414a6d1505cdba6070fedc9fa05d43"
+      "bytes": 26355446,
+      "sha256": "d6aa2253b8582264c17b4c112cc3dc793695dd149c25e5ccab690b2bb2625860"
     },
     "covers_manifest.csv": {
       "path": "data/covers_manifest.csv",
-      "bytes": 6587949,
-      "sha256": "30e08df04220a5898317ea85544678d459bae35a8846729232c9797909af6884"
+      "bytes": 6556220,
+      "sha256": "3ec30d983ae424d32631bba01293139d0ccbd37cba05fb7834348569d932f8ef"
     }
   },
   "release_assets": {
