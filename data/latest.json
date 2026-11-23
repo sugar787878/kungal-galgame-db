@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "version": "2026.11.23",
+  "generated_at": "2026-11-23T12:13:44Z",
+  "source": "https://www.kungal.com",
+  "counts": {
+    "works": 34807,
+    "resource_library": 4995,
+    "with_cover": 31728,
+    "covers_local": 4932
+  },
+  "raw_base": "https://raw.githubusercontent.com/sugar787878/kungal-galgame-db/main/",
+  "files": {
+    "kungal_galgame.db": {
+      "path": "data/kungal_galgame.db",
+      "bytes": 23973888,
+      "sha256": "1225d54d6982e83f5236e8b6cee28c49f53645ff959218b44579c70bb0d69d04"
+    },
+    "works.csv": {
+      "path": "data/works.csv",
+      "bytes": 12322228,
+      "sha256": "49a1a1cdebc69783d213a881cdf5c2cce9f4892aa923c546a2f58bf8c95db1c8"
+    },
+    "resource_library.csv": {
+      "path": "data/resource_library.csv",
+      "bytes": 2283429,
+      "sha256": "5b1d4087a48a4fc080062f6cae9e292a57e1d60c0328319c349f1d7c739856f8"
+    },
+    "works.jsonl": {
+      "path": "data/works.jsonl",
+      "bytes": 26390253,
+      "sha256": "41fa851fc57160e7dc67b26eff593866dc414a6d1505cdba6070fedc9fa05d43"
+    },
+    "covers_manifest.csv": {
+      "path": "data/covers_manifest.csv",
+      "bytes": 6587949,
+      "sha256": "30e08df04220a5898317ea85544678d459bae35a8846729232c9797909af6884"
+    }
+  },
+  "release_assets": {
+    "covers": {
+      "name": "kungal_covers_2026-11-23.zip",
+      "bytes": 413594886,
+      "sha256": "6c2a86aa964d3650d695149b4063f77a955bbb66364614e811238a1379d27d86"
+    }
+  },
+  "repo": "sugar787878/kungal-galgame-db",
+  "release": "https://github.com/sugar787878/kungal-galgame-db/releases/tag/v2026.11.23"
+}
