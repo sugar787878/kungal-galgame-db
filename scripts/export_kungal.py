@@ -42,7 +42,7 @@ def rows(conn, where="1=1", order="in_resource_lib DESC, id ASC"):
 
 def write_csv(path, data):
     with open(path, "w", encoding="utf-8-sig", newline="") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow([h for _, h in COLS])
         for row in data:
             w.writerow([row.get(c) if row.get(c) is not None else "" for c, _ in COLS])

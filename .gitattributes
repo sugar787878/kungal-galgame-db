@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.db binary
+*.webp binary
+*.zip binary
+*.png binary
+*.xlsx binary

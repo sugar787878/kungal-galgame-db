@@ -55,7 +55,7 @@ def covers_manifest(conn, path, covers_dir):
         "WHERE cover_url IS NOT NULL AND cover_url<>'' ORDER BY id").fetchall()
     n = total = 0
     with open(path, "w", encoding="utf-8-sig", newline="") as f:
-        w = csv.writer(f)
+        w = csv.writer(f, lineterminator="\n")
         w.writerow(["id", "filename", "cover_url", "cover_hash", "width", "height", "sha256", "bytes"])
         for wid, url, h, cw, ch in out_rows:
             p = os.path.join(covers_dir, "%s.webp" % wid)
