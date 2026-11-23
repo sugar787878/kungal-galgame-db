@@ -41,7 +41,8 @@
     "covers": {
       "name": "kungal_covers_2026-11-23.zip",
       "bytes": 413594886,
-      "sha256": "6c2a86aa964d3650d695149b4063f77a955bbb66364614e811238a1379d27d86"
+      "sha256": "6c2a86aa964d3650d695149b4063f77a955bbb66364614e811238a1379d27d86",
+      "url": "https://github.com/sugar787878/kungal-galgame-db/releases/download/v2026.11.23/kungal_covers_2026-11-23.zip"
     }
   },
   "release": "https://github.com/sugar787878/kungal-galgame-db/releases/tag/v2026.11.23"

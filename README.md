@@ -146,6 +146,7 @@ python clients/serve_api.py --db data/kungal_galgame.db --port 8000
 - 每次运行流程：抓取 → 重建 CSV/JSONL/XLSX/schema/`latest.json`/浏览页 → 提交 `data/` `docs/` → 发 `v<版本>` release → 触发 Pages 重新部署。
 - 版本号 = 运行日期（UTC），如 `2026.12.01`；同日重复运行会加时分后缀避免 tag 冲突。
 - 客户端无需改代码：`sync.py` / `sync.mjs` 只认 `latest.json` 里的 `version` 与 `sha256`。
+- 注意：每次运行会把新的 `data/*.db|csv|jsonl` 提交进仓库，仓库体积每月增长约 60 MB；介意的话可改成「只提交 `latest.json`、大文件只进 release 资产」。
 
 ### 手动
 

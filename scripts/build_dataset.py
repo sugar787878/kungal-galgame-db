@@ -134,13 +134,21 @@ def main():
         "release_assets": {},
     }
     if args.covers_zip and os.path.exists(args.covers_zip):
+        name = os.path.basename(args.covers_zip)
         doc["release_assets"]["covers"] = {
-            "name": os.path.basename(args.covers_zip),
+            "name": name,
             "bytes": os.path.getsize(args.covers_zip),
             "sha256": sha256(args.covers_zip),
+            "url": ("https://github.com/sugar787878/kungal-galgame-db/releases/download/v%s/%s"
+                    % (args.version, name)),
         }
     elif old.get("release_assets", {}).get("covers"):
-        doc["release_assets"]["covers"] = old["release_assets"]["covers"]
+        covers = dict(old["release_assets"]["covers"])
+        if not covers.get("url"):
+            tag = old.get("version", args.version)
+            covers["url"] = ("https://github.com/sugar787878/kungal-galgame-db/releases/download/v%s/%s"
+                             % (tag, covers["name"]))
+        doc["release_assets"]["covers"] = covers
     doc["release"] = ("https://github.com/sugar787878/kungal-galgame-db/releases/tag/v" + args.version)
 
     with open(latest_path, "w", encoding="utf-8") as f:
