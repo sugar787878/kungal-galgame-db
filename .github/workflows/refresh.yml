@@ -122,14 +122,11 @@ jobs:
             TAG="${TAG}-$(date -u +%H%M)"
           fi
           COUNT=$(python -c "import json;print(json.load(open('data/latest.json'))['counts']['works'])")
+          NOTES="Automated refresh from kungal.com | works: ${COUNT} | snapshot: $(date -u +%F) | manifest: data/latest.json"
           gh release create "$TAG" dist/*.zip \
             --repo "$GITHUB_REPOSITORY" \
             --title "Kungal galgame DB · ${VERSION} (${COUNT} works)" \
-            --notes "Automated refresh from kungal.com.
-
-- works: ${COUNT}
-- manifest: \`data/latest.json\`
-- snapshot date: $(date -u +%F)"
+            --notes "$NOTES"
 
       - name: Trigger Pages deploy
         if: ${{ inputs.publish != false }}
